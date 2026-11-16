@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ton avis sur Hango</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Nunito:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF6F0; --card:#FFFFFF; --ink:#2B2326; --muted:#6E6064;
+  --peach:#F6B8A8; --peach-soft:#FCE3DB; --sky:#BFDDF2; --butter:#FBE7A6; --rose:#F8C9D6;
+  --line:#EBD9D1; --radius:20px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito","Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.55;min-height:100vh}
+h1,h2,h3{font-family:"Jua","Nunito",sans-serif;font-weight:400;line-height:1.2;margin:0}
+h2{font-size:1.7rem}
+p{margin:0}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+.wrap{max-width:640px;margin:0 auto;padding:18px 16px 48px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.brand{font-family:"Jua",sans-serif;font-size:1.25rem;letter-spacing:.02em}
+.bar{flex:1;min-width:90px;height:10px;background:var(--peach-soft);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--peach);border-radius:99px;transition:width .45s cubic-bezier(.3,.8,.3,1)}
+.count{font-size:.85rem;color:var(--muted);min-width:40px;text-align:right}
+.lang{display:flex;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:#fff}
+.lang button{border:0;background:transparent;padding:5px 11px;font-weight:800;font-size:.85rem;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--butter)}
+
+.host{display:flex;align-items:flex-end;gap:10px;margin:6px 0 14px;min-height:130px}
+.host img{width:118px;height:118px;object-fit:contain;flex:none}
+.host img.pop{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+.bubble{background:var(--butter);padding:12px 16px;border-radius:18px 18px 18px 4px;font-weight:700;margin-bottom:22px;max-width:380px}
+
+.card{background:var(--card);border:2px solid var(--ink);border-radius:var(--radius);padding:22px 20px;box-shadow:6px 6px 0 var(--peach)}
+.step{display:none}
+.step.on{display:block;animation:in .4s ease both}
+.step h2{margin-bottom:6px}
+.lead{color:var(--muted);margin-bottom:16px}
+.q{display:block;font-weight:800;margin:20px 0 6px}
+.hint{display:block;font-weight:600;font-size:.88rem;color:var(--muted)}
+input[type=text],textarea{width:100%;border:2px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;transition:border-color .2s,box-shadow .2s}
+input[type=text]:focus,textarea:focus{border-color:var(--ink);outline:none;box-shadow:0 0 0 4px var(--sky)}
+textarea{min-height:96px;resize:vertical}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--ink);background:#fff;border-radius:99px;padding:8px 14px;cursor:pointer;font-weight:700;font-size:.95rem;transition:transform .15s,background .15s}
+.chip:hover{transform:translateY(-2px)}
+.chip[aria-pressed=true]{background:var(--peach);transform:rotate(-1deg)}
+.other{margin-top:10px;display:none}
+.other.on{display:block}
+
+.rank{display:grid;gap:10px;margin:12px 0}
+.rk{display:flex;align-items:center;gap:14px;text-align:left;width:100%;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:12px 14px;cursor:pointer;transition:transform .2s,background .2s}
+.rk:hover{transform:translateX(3px)}
+.rk .n{flex:none;width:42px;height:42px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;font-family:"Jua",sans-serif;font-size:1.25rem;color:transparent;transition:all .25s cubic-bezier(.3,1.6,.5,1)}
+.rk .t b{display:block;font-size:1.05rem}
+.rk .t span{font-size:.88rem;color:var(--muted)}
+.rk.set{background:var(--peach-soft)}
+.rk.set .n{border:2px solid var(--ink);background:var(--peach);color:var(--ink)}
+.rk.set[data-pos="1"] .n{background:var(--butter)}
+.link{background:none;border:0;padding:6px 0;color:var(--muted);text-decoration:underline;cursor:pointer;font-weight:700}
+
+.explore ol{margin:0 0 16px;padding-left:22px}
+.explore li{margin:4px 0}
+.check{display:flex;gap:12px;align-items:flex-start;margin-top:18px;cursor:pointer;font-weight:700}
+.check input{width:22px;height:22px;margin-top:2px;accent-color:#F08C78;flex:none}
+
+.btn{display:inline-block;border:2px solid var(--ink);background:var(--peach);color:var(--ink);border-radius:99px;padding:12px 24px;font-weight:800;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 0 var(--ink)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn.alt{background:var(--sky)}
+.btn:disabled{opacity:.6;cursor:wait}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:10px}
+.err{color:#9B2C2C;font-weight:700;margin-top:12px;min-height:1.4em}
+
+.done{text-align:center}
+.done pre{text-align:left;white-space:pre-wrap;background:var(--peach-soft);border-radius:14px;padding:12px;font-size:.85rem;max-height:220px;overflow:auto}
+.priv{font-size:.82rem;color:var(--muted);margin-top:18px;text-align:center}
+
+.adm table{width:100%;border-collapse:collapse;margin:8px 0 18px;font-size:.95rem}
+.adm th,.adm td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+.adm .c{background:var(--peach-soft);border-radius:12px;padding:10px 12px;margin:8px 0;font-size:.93rem}
+.adm .c small{color:var(--muted)}
+
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.85) rotate(-3deg)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top" id="top">
+    <span class="brand">Hango</span>
+    <div class="bar" role="progressbar" id="pbar" aria-valuemin="0" aria-valuemax="100"><i id="pfill"></i></div>
+    <span class="count" id="pcount"></span>
+    <div class="lang" role="group" aria-label="Langue / Language / 언어">
+      <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" data-lang="ko" aria-pressed="false">한국어</button>
+    </div>
+  </div>
+
+  <div class="host" id="host" aria-live="polite">
+    <img id="hostimg" src="img/malin-lunettes.webp" alt="Malin">
+    <p class="bubble" id="bubble"></p>
+  </div>
+
+  <main class="card">
+    <section class="step on" data-step="0" data-img="malin-lunettes">
+      <h2 data-i="s0_title"></h2>
+      <p class="lead" data-i="s0_lead"></p>
+      <label class="q" for="pseudo"><span data-i="s0_name"></span> <span class="hint" data-i="s0_name_h"></span></label>
+      <input type="text" id="pseudo" maxlength="60" autocomplete="nickname">
+      <div class="q"><span data-i="s0_apps"></span> <span class="hint" data-i="opt"></span></div>
+      <div class="chips" id="apps"></div>
+      <div class="err" role="alert"></div>
+      <div class="nav"><span></span><button type="button" class="btn" data-next data-i="start"></button></div>
+    </section>
+
+    <section class="step explore" data-step="1" data-img="malin-tend">
+      <h2 data-i="s1_title"></h2>
+      <p class="lead" data-i="s1_lead"></p>
+      <ol><li data-i="s1_a"></li><li data-i="s1_b"></li><li data-i="s1_c"></li></ol>
+      <a class="btn alt" href="https://claude.ai/artifact/7eYRsZH69GHXnhuH9emc3C" target="_blank" rel="noopener" data-i="s1_btn"></a>
+      <label class="check"><input type="checkbox" id="vu"><span data-i="s1_check"></span></label>
+      <div class="err" role="alert"></div>
+      <div class="nav"><button type="button" class="link" data-prev data-i="back"></button><button type="button" class="btn" data-next data-i="s1_next"></button></div>
+    </section>
+
+    <section class="step" data-step="2" data-img="malin-pense">
+      <h2 data-i="s2_title"></h2>
+      <p class="lead" data-i="s2_lead"></p>
+      <div class="rank" id="rank"></div>
+      <button type="button" class="link" id="rankreset" data-i="s2_reset"></button>
+      <div class="err" role="alert"></div>
+      <div class="nav"><button type="button" class="link" data-prev data-i="back"></button><button type="button" class="btn" data-next data-i="next"></button></div>
+    </section>
+
+    <section class="step" data-step="3" data-img="malin-balaie">
+      <h2 data-i="s3_title"></h2>
+      <p class="lead" data-i="s3_lead"></p>
+      <label class="q" for="pourquoi"><span data-i="s3_q1"></span> <span class="hint" data-i="s3_h1"></span></label>
+      <textarea id="pourquoi"></textarea>
+      <label class="q" for="moins"><span data-i="s3_q2"></span> <span class="hint" data-i="opt"></span></label>
+      <textarea id="moins"></textarea>
+      <label class="q" for="changer"><span data-i="s3_q3"></span></label>
+      <textarea id="changer"></textarea>
+      <div class="err" role="alert"></div>
+      <div class="nav"><button type="button" class="link" data-prev data-i="back"></button><button type="button" class="btn" data-next data-i="next"></button></div>
+    </section>
+
+    <section class="step" data-step="4" data-img="malin-pouce">
+      <h2 data-i="s4_title"></h2>
+      <p class="lead" data-i="s4_lead"></p>
+      <div class="q"><span data-i="s4_q1"></span> <span class="hint" data-i="max3"></span></div>
+      <div class="chips" id="feats"></div>
+      <input type="text" class="other" id="feats-other" maxlength="120" data-ph="other_ph">
+      <label class="q" for="folle"><span data-i="s4_q2"></span> <span class="hint" data-i="s4_h2"></span></label>
+      <textarea id="folle"></textarea>
+      <div class="err" role="alert"></div>
+      <div class="nav"><button type="button" class="link" data-prev data-i="back"></button><button type="button" class="btn" data-next data-i="next"></button></div>
+    </section>
+
+    <section class="step" data-step="5" data-img="malin-lunettes">
+      <h2 data-i="s5_title"></h2>
+      <div class="q"><span data-i="s5_q1"></span> <span class="hint" data-i="max3"></span></div>
+      <div class="chips" id="revenir"></div>
+      <input type="text" class="other" id="revenir-other" maxlength="120" data-ph="other_ph">
+      <div class="q" data-i="s5_q2"></div>
+      <div class="chips" id="partir"></div>
+      <input type="text" class="other" id="partir-other" maxlength="120" data-ph="other_ph">
+      <div class="err" role="alert"></div>
+      <div class="nav"><button type="button" class="link" data-prev data-i="back"></button><button type="button" class="btn" data-next data-i="next"></button></div>
+    </section>
+
+    <section class="step" data-step="6" data-img="malin-pouce">
+      <h2 data-i="s6_title"></h2>
+      <label class="q" for="mot"><span data-i="s6_q"></span> <span class="hint" data-i="s6_h"></span></label>
+      <textarea id="mot"></textarea>
+      <div class="err" role="alert"></div>
+      <div class="nav"><button type="button" class="link" data-prev data-i="back"></button><button type="button" class="btn" id="send" data-i="send"></button></div>
+      <p class="priv" data-i="priv"></p>
+    </section>
+
+    <section class="step done" data-step="7" data-img="malin-pouce">
+      <h2 data-i="s7_title"></h2>
+      <p class="lead" style="margin-top:8px" data-i="s7_text"></p>
+      <p id="savemsg" style="font-weight:800"></p>
+      <div id="fallback" hidden>
+        <p class="lead" data-i="s7_fb"></p>
+        <pre id="summary"></pre>
+        <button type="button" class="btn alt" id="copy" style="margin-top:12px" data-i="copy"></button>
+      </div>
+    </section>
+  </main>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- textes ---------- */
+var T={
+fr:{
+ s0_title:"Ton avis sur Hango",
+ s0_lead:"Salut ! Je développe Hango, une application pour apprendre le coréen de façon plus interactive et plus amusante. J'ai imaginé cinq interfaces très différentes et j'aimerais savoir ce que tu en penses avant de choisir. Ça prend environ 5 minutes. Il n'y a pas de bonne ni de mauvaise réponse, sois honnête !",
+ s0_name:"Comment puis-je t'appeler ?", s0_name_h:"Prénom ou pseudo",
+ s0_apps:"Tu utilises des applis pour apprendre des langues ?", opt:"Facultatif",
+ start:"Commencer", back:"Retour", next:"Suivant",
+ s1_title:"À toi d'explorer",
+ s1_lead:"Les cinq propositions sont très complètes : chacune montre plusieurs mises en situation, comme si tu étais déjà dans l'appli. Sur certaines, tu peux aussi voir le mode sombre. Il n'y a rien à tester : regarde, ressens l'ambiance, et demande-toi laquelle te donnerait le plus envie de revenir.",
+ s1_a:"Clique sur le bouton pour ouvrir les propositions.", s1_b:"En haut à gauche, ouvre le petit menu déroulant.", s1_c:"Choisis une interface, puis passe aux quatre autres.",
+ s1_btn:"Découvrir les interfaces", s1_check:"J'ai pris le temps de découvrir les cinq propositions.", s1_next:"Donner mon avis",
+ s2_title:"Alors, ton top 5 ?", s2_lead:"Touche les interfaces dans l'ordre : ta préférée en premier, celle qui te plaît le moins en dernier. Touche encore une carte pour la retirer.", s2_reset:"Tout recommencer",
+ s3_title:"Dis-moi pourquoi", s3_lead:"Écrire ou dicter, comme tu préfères : sur téléphone, touche le micro 🎙️ de ton clavier et parle.",
+ s3_q1:"Pourquoi ta numéro 1 ?", s3_h1:"Ambiance, couleurs, originalité, envie d'y revenir…",
+ s3_q2:"Qu'est-ce qui te plaît moins dans les deux dernières ?", s3_q3:"Qu'est-ce que tu changerais, ou mélangerais entre plusieurs interfaces ?",
+ s4_title:"Ton appli idéale", s4_lead:"Pour les réponses libres, tu peux aussi dicter avec le micro 🎙️ de ton clavier.",
+ s4_q1:"Quelles fonctionnalités aimerais-tu avoir ?", max3:"3 choix maximum",
+ s4_q2:"Ton idée folle : une ou plusieurs fonctionnalités à inventer ?", s4_h2:"Facultatif, même la plus improbable",
+ s5_title:"Rester ou partir", s5_q1:"Qu'est-ce qui te ferait revenir tous les jours ?", s5_q2:"Qu'est-ce qui te ferait abandonner l'appli ?",
+ other_ph:"Autre : dis-moi",
+ s6_title:"On arrive à la fin", s6_q:"Un dernier mot ?", s6_h:"Critique, idée, ressenti. Facultatif",
+ send:"Envoyer mon avis", sending:"Envoi…", priv:"Tes réponses servent uniquement à améliorer Hango. Aucune donnée personnelle inutile, aucun suivi publicitaire.",
+ s7_title:"Merci pour ton aide !", s7_text:"Merci d'avoir pris le temps de découvrir Hango et de partager ton avis. Tes réponses vont m'aider à choisir la meilleure direction. Hango est encore en développement, et tes idées peuvent vraiment faire la différence. À bientôt pour la suite !",
+ saved:"Tes réponses sont bien enregistrées.", s7_fb:"Ton avis n'a pas pu être enregistré automatiquement. Copie-le et envoie-le moi, merci !",
+ copy:"Copier mes réponses", copied:"Copié !", copymanual:"Sélectionné : copie-le à la main",
+ e_name:"Dis-moi comment t'appeler, un pseudo suffit.", e_vu:"Coche la case une fois que tu as regardé les cinq propositions.",
+ e_rank:function(n){return "Il reste "+n+" interface"+(n>1?"s":"")+" à classer."},
+ e_why:"Dis-moi pourquoi tu as choisi ta numéro 1.", e_chg:"Dis-moi ce que tu changerais, même un petit détail.",
+ e_max:function(n){return "Tu peux en choisir "+n+" au maximum, retire-en un d'abord."},
+ bubbles:["Cinq interfaces, une seule gagnera. Ton avis compte, alors sois honnête.","Regarde bien. Prends ton temps, je ne suis pas pressé.","Place-les dans l'ordre. Ta préférée d'abord.","Tu as choisi. Maintenant, justifie-toi.","Ton appli idéale. Lâche-toi, même les idées folles m'intéressent.","Ce qui te fait rester, ce qui te fait fuir.","Dernière ligne droite. Un mot et c'est fini.","Merci. Sincèrement. Presque."],
+ apps:["Oui, régulièrement","De temps en temps","Plus maintenant","Jamais"],
+ ifaces:[["Téléphone","L'univers du smartphone"],["Webtoon","Les bandes dessinées coréennes"],["Affiche","Les affiches et leur univers graphique"],["Plateau","Les jeux de plateau"],["Photocards","Les cartes à collectionner"]]
+},
+en:{
+ s0_title:"Your thoughts on Hango",
+ s0_lead:"Hi! I'm building Hango, an app to learn Korean in a more interactive and fun way. I've designed five very different interfaces and I'd love to hear what you think before I choose one. It takes about 5 minutes. There are no right or wrong answers, so please be honest!",
+ s0_name:"What should I call you?", s0_name_h:"First name or nickname",
+ s0_apps:"Do you use apps to learn languages?", opt:"Optional",
+ start:"Start", back:"Back", next:"Next",
+ s1_title:"Take a look around",
+ s1_lead:"The five proposals are very complete: each one shows several scenarios, as if you were already inside the app. Some also have a dark mode. There's nothing to test: just look, feel the mood, and ask yourself which one would make you want to come back.",
+ s1_a:"Click the button to open the proposals.", s1_b:"At the top left, open the small drop-down menu.", s1_c:"Pick one interface, then go through the other four.",
+ s1_btn:"See the interfaces", s1_check:"I took the time to look at all five proposals.", s1_next:"Give my feedback",
+ s2_title:"So, your top 5?", s2_lead:"Tap the interfaces in order: your favorite first, the one you like least last. Tap a card again to remove it.", s2_reset:"Start over",
+ s3_title:"Tell me why", s3_lead:"Type or dictate, whichever you prefer: on a phone, tap the 🎙️ on your keyboard and speak.",
+ s3_q1:"Why is your #1 your favorite?", s3_h1:"Mood, colors, originality, wanting to come back…",
+ s3_q2:"What do you like less about your last two?", s3_q3:"What would you change, or mix between several interfaces?",
+ s4_title:"Your ideal app", s4_lead:"For free-text answers you can also dictate with the 🎙️ on your keyboard.",
+ s4_q1:"Which features would you like to have?", max3:"Up to 3",
+ s4_q2:"Your wildest idea: one or more features to invent?", s4_h2:"Optional, even the most far-fetched",
+ s5_title:"Stay or leave", s5_q1:"What would make you come back every day?", s5_q2:"What would make you quit the app?",
+ other_ph:"Other: tell me",
+ s6_title:"Almost done", s6_q:"A last word?", s6_h:"Criticism, an idea, a feeling. Optional",
+ send:"Send my feedback", sending:"Sending…", priv:"Your answers are only used to improve Hango. No unnecessary personal data, no ad tracking.",
+ s7_title:"Thank you!", s7_text:"Thank you for taking the time to look at Hango and share your thoughts. Your answers will help me choose the best direction. Hango is still in development, and your ideas can really make a difference. See you soon for the next chapter!",
+ saved:"Your answers have been saved.", s7_fb:"Your answers couldn't be saved automatically. Please copy them and send them to me, thank you!",
+ copy:"Copy my answers", copied:"Copied!", copymanual:"Selected: please copy it by hand",
+ e_name:"Please tell me what to call you, a nickname is fine.", e_vu:"Tick the box once you've looked at the five proposals.",
+ e_rank:function(n){return n+" interface"+(n>1?"s":"")+" left to rank."},
+ e_why:"Please tell me why you picked your #1.", e_chg:"Please tell me what you'd change, even a small detail.",
+ e_max:function(n){return "You can pick "+n+" at most, remove one first."},
+ bubbles:["Five interfaces, only one will win. Your opinion matters, so be honest.","Look closely. Take your time, I'm in no hurry.","Put them in order. Your favorite first.","You've chosen. Now justify yourself.","Your ideal app. Let loose, even wild ideas interest me.","What keeps you, what makes you run.","Final stretch. One word and you're done.","Thanks. Sincerely. Almost."],
+ apps:["Yes, regularly","Once in a while","Not anymore","Never"],
+ ifaces:[["Phone","Inspired by smartphones"],["Webtoon","Inspired by Korean webcomics"],["Poster","Inspired by posters and their graphic world"],["Board game","Inspired by board games"],["Photocards","Inspired by collectible cards"]]
+},
+ko:{
+ s0_title:"Hango에 대한 의견",
+ s0_lead:"안녕하세요! 저는 한국어를 더 재미있고 쉽게 배울 수 있는 앱 'Hango'를 만들고 있어요. 아주 다른 인터페이스 다섯 가지를 만들었는데, 하나를 고르기 전에 여러분의 생각을 듣고 싶어요. 약 5분 걸려요. 정답은 없으니 솔직하게 말씀해 주세요!",
+ s0_name:"어떻게 부르면 될까요?", s0_name_h:"이름이나 닉네임",
+ s0_apps:"언어 학습 앱을 쓰고 있나요?", opt:"선택",
+ start:"시작하기", back:"뒤로", next:"다음",
+ s1_title:"먼저 둘러보세요",
+ s1_lead:"다섯 가지 시안은 모두 완성도가 높아요. 각 시안에는 앱 안에 있는 것처럼 보여 주는 여러 장면이 들어 있어요. 일부 시안은 다크 모드도 볼 수 있어요. 직접 눌러 볼 필요는 없어요. 천천히 보면서 분위기를 느끼고, 어느 시안이 가장 다시 쓰고 싶은지 생각해 보세요.",
+ s1_a:"버튼을 눌러 시안을 열어요.", s1_b:"왼쪽 위의 작은 드롭다운 메뉴를 열어요.", s1_c:"시안 하나를 고른 뒤 나머지 네 개도 차례로 봐요.",
+ s1_btn:"시안 보러 가기", s1_check:"다섯 가지 시안을 모두 충분히 살펴봤어요.", s1_next:"의견 남기기",
+ s2_title:"나의 1~5위는?", s2_lead:"마음에 드는 순서대로 시안을 눌러 주세요. 가장 좋은 것을 먼저, 가장 덜 좋은 것을 마지막에 눌러요. 카드를 다시 누르면 취소돼요.", s2_reset:"다시 하기",
+ s3_title:"이유를 알려 주세요", s3_lead:"직접 쓰거나 말로 입력해도 돼요. 휴대폰에서는 키보드의 🎙️ 버튼을 눌러 말해 보세요.",
+ s3_q1:"1위를 고른 이유는 무엇인가요?", s3_h1:"분위기, 색감, 독창성, 다시 쓰고 싶은 마음 등",
+ s3_q2:"4~5위 시안에서 덜 마음에 든 점은 무엇인가요?", s3_q3:"바꾸고 싶은 점이나, 여러 시안에서 섞고 싶은 요소가 있나요?",
+ s4_title:"내가 바라는 앱", s4_lead:"자유롭게 쓰는 답변은 키보드의 🎙️ 버튼으로 말해서 입력해도 돼요.",
+ s4_q1:"어떤 기능이 있으면 좋겠어요?", max3:"최대 3개",
+ s4_q2:"엉뚱한 아이디어: 새로 만들었으면 하는 기능이 있나요?", s4_h2:"선택, 아무리 엉뚱해도 좋아요",
+ s5_title:"계속할까, 그만둘까", s5_q1:"매일 다시 오게 만드는 것은 무엇인가요?", s5_q2:"앱을 그만두게 만드는 것은 무엇인가요?",
+ other_ph:"기타: 알려 주세요",
+ s6_title:"거의 다 됐어요", s6_q:"마지막으로 한마디?", s6_h:"비판, 아이디어, 느낀 점 등 (선택)",
+ send:"의견 보내기", sending:"보내는 중…", priv:"답변은 Hango를 개선하는 데에만 사용돼요. 불필요한 개인정보는 받지 않고, 광고 추적도 하지 않아요.",
+ s7_title:"감사합니다!", s7_text:"Hango를 살펴보고 의견을 나눠 주셔서 감사해요. 보내 주신 답변은 가장 좋은 방향을 고르는 데 큰 도움이 될 거예요. Hango는 아직 개발 중이고, 여러분의 아이디어가 정말 큰 힘이 돼요. 다음 소식으로 또 만나요!",
+ saved:"답변이 잘 저장되었어요.", s7_fb:"답변이 자동으로 저장되지 않았어요. 복사해서 저에게 보내 주세요. 감사합니다!",
+ copy:"답변 복사하기", copied:"복사됨!", copymanual:"선택되었어요. 직접 복사해 주세요",
+ e_name:"이름이나 닉네임을 알려 주세요.", e_vu:"다섯 가지 시안을 본 뒤에 체크해 주세요.",
+ e_rank:function(n){return "아직 "+n+"개가 남았어요."},
+ e_why:"1위를 고른 이유를 알려 주세요.", e_chg:"바꾸고 싶은 점을 알려 주세요. 작은 것이라도 좋아요.",
+ e_max:function(n){return "최대 "+n+"개까지 고를 수 있어요. 하나를 먼저 해제해 주세요."},
+ bubbles:["인터페이스는 다섯 개, 승자는 하나. 솔직한 의견이 중요해요.","잘 살펴보세요. 천천히 하세요, 저는 급하지 않아요.","순서대로 놓아 보세요. 제일 좋은 것부터요.","골랐네요. 이제 이유를 말해 보세요.","이상적인 앱을 떠올려 보세요. 엉뚱한 아이디어도 환영이에요.","머물게 하는 것, 떠나게 하는 것.","마지막이에요. 한마디만 하면 끝!","고마워요. 진심으로. 거의요."],
+ apps:["네, 꾸준히 써요","가끔 써요","예전에는 썼어요","쓴 적 없어요"],
+ ifaces:[["스마트폰","스마트폰에서 영감을 받은 시안"],["웹툰","한국 웹툰에서 영감을 받은 시안"],["포스터","포스터와 그래픽 세계에서 영감을 받은 시안"],["보드게임","보드게임에서 영감을 받은 시안"],["포토카드","수집용 카드에서 영감을 받은 시안"]]
+}};
+
+/* Les réponses sont toujours enregistrées avec les libellés français (index 0), quelle que soit la langue. */
+var OPT={
+ feats:[["Défis entre amis","Challenges with friends","친구와 대결"],["Classements","Leaderboards","랭킹"],["Photocards à collectionner","Collectible photocards","수집하는 포토카드"],["Personnalisation","Customization","꾸미기"],["Conversations interactives","Interactive conversations","대화 연습"],["Mode K-drama","K-drama mode","K-드라마 모드"],["Mode K-pop","K-pop mode","K-팝 모드"],["Découverte de la Corée","Discovering Korea","한국 알아보기"],["Mini-jeux","Mini-games","미니게임"],["Quêtes quotidiennes","Daily quests","일일 퀘스트"],["Événements spéciaux","Special events","특별 이벤트"],["Compagnon virtuel","Virtual companion","가상 친구(마스코트)"],["Autre","Other","기타"]],
+ revenir:[["Voir ma progression","See my progress","내 진도 보기"],["Débloquer des récompenses","Unlock rewards","보상 얻기"],["Compléter une collection","Complete a collection","컬렉션 완성하기"],["Défis avec mes amis","Challenges with friends","친구와 도전하기"],["Découvrir de nouveaux contenus","Discover new content","새로운 콘텐츠 만나기"],["Interagir avec la mascotte","Interact with the mascot","마스코트와 소통하기"],["Garder ma série de jours","Keep my daily streak","연속 학습 유지하기"],["Participer à des événements","Join events","이벤트 참여하기"],["Améliorer mon coréen","Improve my Korean","한국어 실력 늘리기"],["Autre","Other","기타"]],
+ partir:[["Exercices répétitifs","Repetitive exercises","반복적인 문제"],["Interface compliquée","Complicated interface","복잡한 화면"],["Manque de nouveautés","Lack of new content","새로운 것이 없음"],["Progression trop lente","Progress too slow","진도가 너무 느림"],["Trop de notifications","Too many notifications","알림이 너무 많음"],["Animations trop longues","Animations too long","애니메이션이 너무 김"],["Trop enfantin","Too childish","너무 유치함"],["Trop proche d'un jeu","Too much like a game","너무 게임 같음"],["Manque de personnalisation","Not enough customization","꾸미기 기능 부족"],["Trop de fonctions payantes","Too many paid features","유료 기능이 너무 많음"],["Autre","Other","기타"]]
+};
+var LI={fr:0,en:1,ko:2};
+var IFACES=["telephone","webtoon","affiche","plateau","photocards"];
+var FR_NAMES=["Téléphone","Webtoon","Affiche","Plateau","Photocards"];
+/* >>> COLLE ICI L'ADRESSE DE TON SERVICE (ex. https://formspree.io/f/xxxxxxxx) <<< */
+var ENDPOINT="";
+var TOTAL=7;
+
+var S={lang:"fr",apps:"",rank:[],feats:[],revenir:[],partir:[]};
+var cur=0, sending=false;
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function L(){return T[S.lang]}
+var steps=$$(".step");
+
+/* ---------- langue ---------- */
+function applyLang(){
+  var l=L();
+  document.documentElement.lang=S.lang;
+  $$("[data-i]").forEach(function(e){e.textContent=l[e.dataset.i]});
+  $$("[data-ph]").forEach(function(e){e.placeholder=l[e.dataset.ph]});
+  $$("[data-lang]").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.lang===S.lang))});
+  $("#hostimg").alt="Malin";
+  drawApps(); drawRank(); drawChips("feats",3); drawChips("revenir",3); drawChips("partir",99);
+  $("#bubble").textContent=l.bubbles[cur];
+  $("#pcount").textContent=cur<TOTAL?(cur+1)+" / "+TOTAL:"";
+  $$(".err").forEach(function(e){e.textContent=""});
+  var sm=$("#savemsg"); if(sm.dataset.ok==="1") sm.textContent=l.saved;
+}
+$$("[data-lang]").forEach(function(b){b.addEventListener("click",function(){S.lang=b.dataset.lang; applyLang()})});
+
+/* ---------- navigation ---------- */
+function show(i){
+  cur=i;
+  steps.forEach(function(s){s.classList.toggle("on",+s.dataset.step===i)});
+  var st=steps[i], img=$("#hostimg");
+  img.src="img/"+st.dataset.img+".webp"; img.classList.remove("pop"); void img.offsetWidth; img.classList.add("pop");
+  $("#bubble").textContent=L().bubbles[i];
+  var pct=Math.round(i/TOTAL*100);
+  $("#pfill").style.width=pct+"%"; $("#pbar").setAttribute("aria-valuenow",pct);
+  $("#pcount").textContent=i<TOTAL?(i+1)+" / "+TOTAL:"";
+  window.scrollTo({top:0,behavior:"smooth"});
+  var h=$("h2",st); if(h){h.setAttribute("tabindex","-1"); h.focus({preventScroll:true})}
+}
+function err(i,msg){var e=$(".err",steps[i]); if(e) e.textContent=msg||""}
+function filled(id){return $("#"+id).value.trim().length>0}
+function validate(i){
+  var l=L(); err(i,"");
+  if(i===0&&!filled("pseudo")){err(0,l.e_name);$("#pseudo").focus();return false}
+  if(i===1&&!$("#vu").checked){err(1,l.e_vu);return false}
+  if(i===2&&S.rank.length<5){err(2,l.e_rank(5-S.rank.length));return false}
+  if(i===3){
+    if(!filled("pourquoi")){err(3,l.e_why);$("#pourquoi").focus();return false}
+    if(!filled("changer")){err(3,l.e_chg);$("#changer").focus();return false}
+  }
+  return true;
+}
+steps.forEach(function(st){
+  var n=$("[data-next]",st), p=$("[data-prev]",st);
+  if(n&&n.id!=="send") n.addEventListener("click",function(){var i=+st.dataset.step; if(validate(i)) show(i+1)});
+  if(p) p.addEventListener("click",function(){show(+st.dataset.step-1)});
+});
+document.addEventListener("keydown",function(e){
+  if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.type==="text"){
+    var st=e.target.closest(".step"), n=st&&$("[data-next]",st); if(n){e.preventDefault();n.click()}
+  }
+});
+
+/* ---------- puces ---------- */
+function drawApps(){
+  var box=$("#apps"); box.textContent="";
+  var labels=L().apps;
+  labels.forEach(function(label,idx){
+    var b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=label;
+    b.setAttribute("aria-pressed",String(S.apps===T.fr.apps[idx]));
+    b.addEventListener("click",function(){
+      var key=T.fr.apps[idx]; S.apps=(S.apps===key)?"":key; drawApps();
+    });
+    box.appendChild(b);
+  });
+}
+function drawChips(key,max){
+  var box=$("#"+key); box.textContent="";
+  var other=$("#"+key+"-other");
+  OPT[key].forEach(function(row){
+    var fr=row[0], b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=row[LI[S.lang]];
+    var on=S[key].indexOf(fr)>-1; b.setAttribute("aria-pressed",String(on));
+    b.addEventListener("click",function(){
+      var has=S[key].indexOf(fr)>-1;
+      if(has){S[key]=S[key].filter(function(x){return x!==fr})}
+      else{
+        if(S[key].length>=max){err(cur,L().e_max(max));return}
+        S[key].push(fr);
+      }
+      err(cur,"");
+      drawChips(key,max);
+      var otherOn=S[key].indexOf("Autre")>-1; other.classList.toggle("on",otherOn);
+      if(fr==="Autre"&&otherOn) other.focus();
+    });
+    box.appendChild(b);
+  });
+  other.classList.toggle("on",S[key].indexOf("Autre")>-1);
+}
+
+/* ---------- classement ---------- */
+function drawRank(){
+  var box=$("#rank"); box.textContent="";
+  var names=L().ifaces;
+  IFACES.forEach(function(k,idx){
+    var pos=S.rank.indexOf(k)+1;
+    var b=document.createElement("button"); b.type="button"; b.className="rk"+(pos?" set":""); b.dataset.pos=pos||"";
+    b.setAttribute("aria-label",names[idx][0]+(pos?" · "+pos:""));
+    var n=document.createElement("span"); n.className="n"; n.textContent=pos||"";
+    var t=document.createElement("span"); t.className="t";
+    var bb=document.createElement("b"); bb.textContent=names[idx][0];
+    var sp=document.createElement("span"); sp.textContent=names[idx][1];
+    t.appendChild(bb); t.appendChild(sp); b.appendChild(n); b.appendChild(t);
+    b.addEventListener("click",function(){
+      var i=S.rank.indexOf(k);
+      if(i>-1) S.rank.splice(i,1); else S.rank.push(k);
+      err(2,""); drawRank();
+      var again=$$(".rk",$("#rank"))[idx]; if(again) again.focus();
+    });
+    box.appendChild(b);
+  });
+}
+$("#rankreset").addEventListener("click",function(){S.rank=[];drawRank()});
+
+/* ---------- envoi ---------- */
+function withOther(list,id){return list.map(function(x){return x==="Autre"&&$("#"+id).value.trim()?"Autre : "+$("#"+id).value.trim():x})}
+function payload(){
+  return {
+    pseudo:$("#pseudo").value.trim(), langue:S.lang, apps:S.apps, vu:true,
+    classement:S.rank.slice(), classementNoms:S.rank.map(function(k){return FR_NAMES[IFACES.indexOf(k)]}),
+    pourquoiN1:$("#pourquoi").value.trim(), moinsAimes:$("#moins").value.trim(), changer:$("#changer").value.trim(),
+    fonctionnalites:withOther(S.feats,"feats-other"), idee:$("#folle").value.trim(),
+    revenir:withOther(S.revenir,"revenir-other"), abandon:withOther(S.partir,"partir-other"),
+    dernierMot:$("#mot").value.trim(), date:new Date().toISOString()
+  };
+}
+function summary(p){
+  return ["Avis Hango de "+p.pseudo+" ("+p.langue+")",
+   "Classement : "+p.classementNoms.map(function(n,i){return (i+1)+". "+n}).join("  "),
+   "Pourquoi la n°1 : "+p.pourquoiN1,
+   "Moins aimées : "+(p.moinsAimes||"-"),
+   "À changer / mélanger : "+p.changer,
+   "Fonctionnalités : "+(p.fonctionnalites.join(", ")||"-"),
+   "Idée folle : "+(p.idee||"-"),
+   "Me ferait revenir : "+(p.revenir.join(", ")||"-"),
+   "Me ferait partir : "+(p.abandon.join(", ")||"-"),
+   "Dernier mot : "+(p.dernierMot||"-")].join("\n");
+}
+async function save(p){
+  if(!ENDPOINT) return false;
+  try{
+    var flat={};
+    Object.keys(p).forEach(function(k){flat[k]=Array.isArray(p[k])?p[k].join(" | "):p[k]});
+    var r=await fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(flat)});
+    return r.ok;
+  }catch(e){return false}
+}
+$("#send").addEventListener("click",async function(){
+  if(sending) return;
+  if(!validate(6)) return;
+  sending=true; var b=this; b.disabled=true; b.textContent=L().sending;
+  var p=payload(), ok=await save(p);
+  var sm=$("#savemsg"); sm.dataset.ok=ok?"1":"0"; sm.textContent=ok?L().saved:"";
+  if(!ok){$("#summary").textContent=summary(p); $("#fallback").hidden=false}
+  show(7); $("#pfill").style.width="100%";
+});
+$("#copy").addEventListener("click",function(){
+  var t=$("#summary").textContent, b=this;
+  function sel(){var r=document.createRange(); r.selectNodeContents($("#summary")); var s=getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent=L().copymanual}
+  try{navigator.clipboard.writeText(t).then(function(){b.textContent=L().copied},sel)}catch(e){sel()}
+});
+
+/* ---------- démarrage ---------- */
+var nl=(navigator.language||"fr").toLowerCase();
+S.lang=nl.indexOf("ko")===0?"ko":nl.indexOf("en")===0?"en":"fr";
+applyLang();
+show(0);
+})();
+</script>
+</body>
+</html>
