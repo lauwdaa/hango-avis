@@ -317,6 +317,7 @@ var IFACES=["telephone","webtoon","affiche","plateau","photocards"];
 var FR_NAMES=["Téléphone","Webtoon","Affiche","Plateau","Photocards"];
 /* >>> COLLE ICI L'ADRESSE DE TON SERVICE (ex. https://formspree.io/f/xxxxxxxx) <<< */
 var ENDPOINT="https://formspree.io/f/xyewelbb";
+var SHEET="https://script.google.com/macros/s/AKfycbxgoyg6UW9jPSGK4vWmfXpq_9ZQmp_ITXsRI9-po0VgkliGLatzZTKQRyZVe68r6Jh1/exec";
 var TOTAL=7;
 
 var S={lang:"fr",apps:"",rank:[],feats:[],revenir:[],partir:[]};
@@ -464,13 +465,12 @@ function summary(p){
    "Dernier mot : "+(p.dernierMot||"-")].join("\n");
 }
 async function save(p){
-  if(!ENDPOINT) return false;
-  try{
-    var flat={};
-    Object.keys(p).forEach(function(k){flat[k]=Array.isArray(p[k])?p[k].join(" | "):p[k]});
-    var r=await fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(flat)});
-    return r.ok;
-  }catch(e){return false}
+  var flat={};
+  Object.keys(p).forEach(function(k){flat[k]=Array.isArray(p[k])?p[k].join(" | "):p[k]});
+  var body=JSON.stringify(flat), ok=false;
+  try{ var r1=await fetch(SHEET,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body}); ok=r1.ok; }catch(e){}
+  try{ var r2=await fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:body}); ok=ok||r2.ok; }catch(e){}
+  return ok;
 }
 $("#send").addEventListener("click",async function(){
   if(sending) return;
